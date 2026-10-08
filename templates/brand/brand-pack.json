@@ -1,0 +1,106 @@
+{
+  "_": "品牌包 —— 本文件是「品牌 skill → 杂志图引擎」之间的唯一接口。字段契约见 ../../contracts/brand-pack.md。示例用的是「由良妙 ゆらたえ」，换成你自己的品牌时整份替换即可。",
+
+  "brandId": "yurutae",
+  "brandSkill": "yurutae-brand",
+  "defaultLang": "jp",
+  "langs": ["jp", "zh"],
+
+  "name": { "native": "由良妙", "kana": "ゆらたえ", "romaji": "YURUTAE", "zh": "由良妙" },
+
+  "signature": {
+    "primary": "下着の作家",
+    "zh": "内衣作家",
+    "noPlaceName": true,
+    "note": "署名不附地名；法定表示栏写责任主体（表示者名），不写人格化署名。"
+  },
+
+  "slogan": {
+    "native": "すきなものは、すき。",
+    "zh": "你喜欢，就够了。",
+    "mustPair": ["からだの形は、からだが決める。", "好みに、正解はない。"],
+    "note": "Slogan 出现时后必须紧跟一句「交回决定权」的句子（配平规则）。"
+  },
+
+  "tone": {
+    "summary": "渋い＋凛・共感的理解・前向き。停止试图讨好之后的样子；话少、手准。",
+    "rules": [
+      "主语是物（布、缝线、结构），不是人；不评价人。",
+      "不写体感；未实测的一律改写为构造描述，或标注来源（試着記録より）。",
+      "不出现工艺描述（我们这样织 / 採用〜製法）。",
+      "年份・传承・产地一律走引用体，不走声称体。"
+    ]
+  },
+
+  "forbidden": {
+    "adjectives": ["究極", "最高", "奇跡", "贅沢", "圧倒的", "極上", "ふわふわ", "高雅", "亮眼", "絕妙", "绝妙", "艷麗", "艳丽"],
+    "claims": ["寄せ上げ", "寄せて上げる", "集中", "補正", "托高", "立體", "立体", "育乳", "肩こり軽減", "ノンワイヤー", "無鋼圈", "无钢圈"],
+    "brands": ["Victory Doopair", "Doopair", "Rhodes", "Goody International", "mimi33", "IDO/alchemy", "FRAY I.D", "Sela d'ama", "Ier Arrendissement", "Showroom"],
+    "symbols": ["♥", "💕"]
+  },
+
+  "palette": {
+    "paper": "#f7f4ee",
+    "paperWarm": "#f7f4ee",
+    "paperCream": "#efe6d8",
+    "ink": "#1a1815",
+    "ink2": "#3d3833",
+    "ink3": "#6f6862",
+    "ink4": "#a09890",
+    "rule": "#cfc7bb",
+    "ruleSoft": "#e6e0d8",
+    "accent": "#8c2f39",
+    "accentDeep": "#8c2f39",
+    "accentSoft": "#e7d3d5",
+    "accentWash": "#f4eeea",
+
+    "_refColors": "参考刊解析色：取值来自参考图读数（背景基色取未被主体污染的三角中位；刊头粉取刊头填充色众数）。版式只引用令牌名，不写死色值。pinkDeep/warmDeep 是**按对比度反算**的加深档（见 css/tokens.css 3b 段注释），不是审美取值。",
+    "sky": "#E4EBF6",
+    "pink": "#F1A1BB",
+    "pinkDeep": "#D4557F",
+    "inkCool": "#3B4A63",
+    "warmDeep": "#4B2731"
+  },
+
+  "fonts": {
+    "serif": "\"Mag Mincho JP\",\"Mag Mincho SC\",SimSun,\"Times New Roman\",serif",
+    "sans": "\"Mag Gothic JP\",\"Microsoft JhengHei\",\"Yu Gothic\",\"Microsoft YaHei\",sans-serif",
+    "script": "\"Mag Script Silk\",\"Mag Script Ribbon\",cursive",
+    "scriptFat": "\"Mag Script Ribbon\",\"Mag Script Silk\",cursive",
+    "latin": "\"Mag Editorial\",Didot,Georgia,serif",
+    "latinItal": "\"Mag Editorial Italic\",\"Mag Editorial\",Georgia,serif"
+  },
+
+  "fontMap": [
+    { "role": "serif", "from": "参考刊标题明朝体（商用版权字体）", "to": "Mag Mincho JP / SC（Noto Serif JP/SC）", "why": "相似点：同为高对比明朝，横细竖粗、字面宽度接近。差异：参考刊竖画收笔顿角更锐、假名曲线更紧；替代体顿角略圆、假名稍宽，故标题需靠 tracking 收一点。OFL 可商用，规避字体版权" },
+    { "role": "sans", "from": "参考刊正文细黑体（商用版权字体）", "to": "Mag Gothic JP（Noto Sans JP）", "why": "相似点：同为低对比无衬线，字面率高、小字号可读。差异：参考刊笔画更细、字腔更开（更接近 Hiragino 系）；替代体笔画略粗、字面略窄，小字号（≤11px）需下调一级字重" },
+    { "role": "script", "from": "参考刊 copperplate 细手写", "to": "Mag Script Silk（Pinyon Script）", "why": "相似点：同为笔画如丝线的 copperplate 系，斜度与连笔节奏一致。差异：替代体 x-height 偏小、大写首字母装饰更繁，短词（如 Step、NEWS）视觉更轻，需放大一级字号" },
+    { "role": "scriptFat", "from": "参考刊装饰性粗手写", "to": "Mag Script Ribbon（Great Vibes）", "why": "相似点：同为笔画丰满的装饰手写，回转与收笔的粗细对比明显。差异：替代体字宽更大、上伸部更高，长串易横向溢出，须留 10% 左右余量" },
+    { "role": "latin", "from": "参考刊大写字标（Didot 系）", "to": "Mag Editorial（Playfair Display）", "why": "相似点：同为高对比 Didot 系衬线，粗细反差大、竖画挺。差异：替代体字面稍宽、数字为等宽（tabular），页码与编号的视觉宽度比参考刊宽，排号时要注意对齐" },
+    { "role": "latinItal", "from": "参考刊斜体小注（Didot Italic 系）", "to": "Mag Editorial Italic（Playfair Display Italic）", "why": "相似点：同为高对比斜体，倾斜角一致，用于压在照片上的「Step」这类斜体标签。差异：替代体斜体的上伸部更夸张，压图时白字描边要相应加厚" }
+  ],
+
+  "visual": {
+    "maxWeight": 500,
+    "displayWeight": 900,
+    "minWhitespace": 0.4,
+    "badgesIconOnly": true,
+    "banned": ["gradient", "neon", "large-color-block", "countdown"],
+    "photoRule": "拍布、拍缝线、拍结构；不拍「完美身材」。"
+  },
+
+  "price": { "currency": "¥", "defaultPrice": "¥1,950", "showWhenMissing": false },
+
+  "compliance": {
+    "regimes": ["景品表示法", "家庭用品品質表示法", "薬機法", "特定商取引法"],
+    "rules": [
+      "产品信息里没有的标签（折扣、包邮、获奖、功能），一个字都不加。",
+      "地缘来源 ≠ 材料来源，不得混用。",
+      "促销信息一律图标化，不写进正文语句。",
+      "署名不附地名；法定表示栏写责任主体。"
+    ],
+    "escalate": "涉及署名、表示者名、景表法边界的最终判断，须由日本行政書士／弁理士过一遍。"
+  },
+
+  "meta": { "issue": "yurutae-ooo-01", "updatedAt": "2026-09-30" }
+}

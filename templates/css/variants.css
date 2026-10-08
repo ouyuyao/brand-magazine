@@ -1,0 +1,100 @@
+@charset "UTF-8";
+/* =========================================================================
+   variants.css —— 版式变体引擎（样式层·品牌无关版）
+   -------------------------------------------------------------------------
+   载入顺序：必须在 brand/_skin.css 之后（由 build.js 生成的 <head> 保证）。
+   ★ 本文件**不定义任何颜色值** —— 颜色属于品牌层（brand/brand-pack.json
+      → brand/_skin.css）。变体引擎只做「母题 / 字距 / 调色 / 相纸厚度」，
+     用品牌已经定好的 tokens（var(--accent) 等）。yurutae 版里那套
+     [data-palette] 色板轴已删除：那是越权定义颜色。
+   -------------------------------------------------------------------------
+   轴（全部由 js/variants.js 依 seed 决定，写在 <html> / .page 上）：
+     [data-motif]  页边装饰母题   none / dots / rule / arc / band / corner
+     [data-frame]  相纸厚度       normal / thin / wide
+     [data-grade]  照片调色       none / warm / cool / film
+     --v-track     标题字距微调
+   不设任何 attribute（seed 为 null）= 原始复刻版，版面与品牌 skin 完全一致。
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. 字级 / 字距微调（幅度刻意压小：只做「呼吸感」差异，不做风格差异）
+   ------------------------------------------------------------------------- */
+html[data-variant] h1,
+html[data-variant] h2,
+html[data-variant] h3,
+html[data-variant] .z--text[data-variant-allow~="track"] > .t {
+  letter-spacing: calc(var(--v-track, 0em));
+}
+/* 注意：这里用 calc 只加扰动量，不覆盖版面自己写死的 letter-spacing。
+   真正的「字距变体」由 zone 白名单 track 决定（没声明的标题不动）。 */
+
+/* -------------------------------------------------------------------------
+   2. 页边装饰母题
+   —— 全部落在安全边之外或极淡处，不碰内容区。
+   ------------------------------------------------------------------------- */
+.v-motif { position: absolute; pointer-events: none; z-index: 1; }
+/* 由 js/variants.js 插在 .page 内容之后，但 z-index:1 让它仍画在内容之上。
+   只有 corner 母题靠「静态位置」定位，所以给它明确 inset:0，
+   否则会跟着插入位置跑到页底。 */
+.page[data-motif="corner"] .v-motif { inset: 0; }
+
+/* 细点阵（右下） */
+.page[data-motif="dots"] .v-motif {
+  right: 40px; bottom: 62px; width: 132px; height: 88px;
+  background-image: radial-gradient(var(--accent) 1.6px, transparent 1.7px);
+  background-size: 18px 18px; opacity: .5;
+}
+/* 页边细框（内缩圆角细线） */
+.page[data-motif="rule"] .v-motif {
+  inset: 26px; border: 1px solid var(--rule);
+}
+.page[data-motif="rule"] .v-motif::after {
+  content: ''; position: absolute; inset: 6px; border: 1px solid var(--rule-soft);
+}
+/* 右上弧线 */
+.page[data-motif="arc"] .v-motif {
+  right: -130px; top: -130px; width: 400px; height: 400px; border-radius: 50%;
+  border: 52px solid var(--accent-soft); opacity: .72;
+}
+/* 右侧色条 */
+.page[data-motif="band"] .v-motif {
+  right: 0; top: 0; bottom: 0; width: 22px; background: var(--accent-soft); opacity: .9;
+}
+/* 左上＋右下小方块组 */
+.page[data-motif="corner"] .v-motif::before,
+.page[data-motif="corner"] .v-motif::after {
+  content: ''; position: absolute; width: 86px; height: 86px;
+}
+.page[data-motif="corner"] .v-motif::before {
+  left: 34px; top: 34px; background: var(--accent-wash);
+  box-shadow: inset 0 0 0 1px var(--accent-soft);
+}
+.page[data-motif="corner"] .v-motif::after {
+  right: 34px; bottom: 34px; background: var(--accent-soft); opacity: .55;
+}
+
+/* -------------------------------------------------------------------------
+   3. 照片调色（grade）
+   —— 「一眼看得出不同套」最有效的一条轴。
+      ★ 只套在 .z--image 的图上（模特／场景照）。
+        .z--cutout（抠图产品）与 .z--logo 一律不加滤镜 ——
+        否则颜色与实物不符，触犯电商图片真实性 / 景品表示法要求。
+   ------------------------------------------------------------------------- */
+html[data-grade="warm"] .z--image img { filter: sepia(.18) saturate(1.08) brightness(1.02) contrast(1.01); }
+html[data-grade="cool"] .z--image img { filter: saturate(.92) hue-rotate(-9deg) brightness(1.03); }
+html[data-grade="film"] .z--image img { filter: contrast(1.07) saturate(.84) sepia(.10) brightness(1.01); }
+html[data-grade="none"] .z--image img { filter: none; }
+
+/* -------------------------------------------------------------------------
+   4. 相纸厚度（frame）—— 只作用于声明了 frame 白名单的图片框
+   ------------------------------------------------------------------------- */
+.z--image[data-variant-allow~="frame"] { padding: 12px 12px 16px; background: var(--paper-cream); }
+.page[data-frame="thin"] .z--image[data-variant-allow~="frame"] { padding: 8px 8px 11px; }
+.page[data-frame="wide"] .z--image[data-variant-allow~="frame"] { padding: 18px 18px 24px; box-shadow: var(--sh-photo); }
+
+/* -------------------------------------------------------------------------
+   5. 工具列的「换一版」按钮（由 variants.js 动态插入，故在此定义样式）
+   ------------------------------------------------------------------------- */
+.tb-variant { font-variant-numeric: tabular-nums; }
+.tb-variant .seedcode { font-family: var(--font-latin); opacity: .72; margin-left: 4px; }
+html[data-variant] .tb-variant { background: var(--accent-soft); }

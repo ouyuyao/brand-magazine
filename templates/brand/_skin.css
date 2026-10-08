@@ -1,0 +1,24 @@
+/* 由 build.js 生成 —— 请勿手改；改 brand/brand-pack.json 后重新 node build.js */
+/* 品牌：由良妙 / ゆらたえ — yurutae */
+:root {
+  --paper: #f7f4ee;
+  --paper-warm: #f7f4ee;
+  --paper-cream: #efe6d8;
+  --ink: #1a1815;
+  --ink-2: #3d3833;
+  --ink-3: #6f6862;
+  --ink-4: #a09890;
+  --rule: #cfc7bb;
+  --rule-soft: #e6e0d8;
+  --accent: #8c2f39;
+  --accent-soft: #e7d3d5;
+  --accent-deep: #8c2f39;
+  --accent-wash: #f4eeea;
+  --font-serif: "Mag Mincho JP","Mag Mincho SC",SimSun,"Times New Roman",serif;
+  --font-sans: "Mag Gothic JP","Microsoft JhengHei","Yu Gothic","Microsoft YaHei",sans-serif;
+  --font-script: "Mag Script Silk","Mag Script Ribbon",cursive;
+  --font-script-fat: "Mag Script Ribbon","Mag Script Silk",cursive;
+  --font-latin: "Mag Editorial",Didot,Georgia,serif;
+  --font-latin-ital: "Mag Editorial Italic","Mag Editorial",Georgia,serif;
+  /* 品牌字重上限：500（版式里超过的字重应下调，见 references/02 */
+}

@@ -1,0 +1,99 @@
+@charset "UTF-8";
+/* =========================================================================
+   tokens.css —— 设计令牌（引擎默认值）
+   -------------------------------------------------------------------------
+   这一层是「引擎出厂默认」。**品牌包会覆盖它**：
+   build.js 读 brand/brand-pack.json → 生成 brand/_skin.css（只写覆写项），
+   每个页面在 tokens.css 之后加载 _skin.css，于是同一套版式换品牌只换配色与字体。
+
+   想手工微调也可以直接改这里（会作为所有品牌的兜底）。
+   ========================================================================= */
+
+:root {
+  /* ---------- 1. 画布（默认值；实际每页由 layout JSON 的 canvas 覆盖） ---------- */
+  --page-w: 1366px;
+  --page-h: 1748px;
+  --page-scale: 1;
+
+  /* ---------- 2. 纸张与墨色 ---------- */
+  --paper:        #ffffff;   /* 纸底（品牌包 palette.paper 覆盖） */
+  --paper-warm:   #f7f4ee;   /* 生成り（米白纸） */
+  --paper-cream:  #efe6d8;   /* 奶油纸 */
+  --paper-grey:   #f2f1ef;
+  --ink:          #1a1815;   /* 主文字 */
+  --ink-2:        #3d3833;   /* 次文字 */
+  --ink-3:        #6f6862;   /* 说明文字 */
+  --ink-4:        #a09890;   /* 极淡注记 */
+  --rule:         #cfc7bb;   /* 细罫线 */
+  --rule-soft:    #e6e0d8;
+
+  /* ---------- 3. 强调色（品牌包 palette.accent 覆盖；默认中性墨色） ---------- */
+  --accent:       #1a1815;
+  --accent-soft:  #e8e4de;
+  --accent-deep:  #1a1815;
+  --accent-wash:  #f4f2ee;
+
+  /* ---------- 3b. 参考刊解析色（品牌包 palette 覆盖） ----------
+     这五个不是「品牌主色」，而是**参考刊解析出来的功能色**——它们的取值来自
+     参考图（背景基色、刊头强调色、被主体衬着的对比墨），用途固定：
+       --sky       出血照重铺的**背景基色**（herorecut.py --bg-from 量出来的就是它）
+       --pink      刊头/大字号强调色（参考刊的粉）
+       --pink-deep 压在照片/浅底上的**强调色加深一档**（弧排字、角标）
+       --ink-cool  压在浅蓝底上的墨（与背景同色系加深 → 天然高对比）
+       --warm-deep 压在人物暖调（肌肤/米色薄纱）上的墨（暖调加深 → 与人物色匹配）
+     有它们，版式里就不出现写死色值；换品牌仍然只换 brand-pack.json。
+
+     ★2026-10-01 加深：--warm-deep 与 --pink-deep 都往下压了一档。
+       起因是用户第 5 点「文案要用与背景色和人物颜色匹配的对比色」。
+       反算过程：以 contrastcheck 实测的中调底（fam 底下灰度 159）为准，
+       正文要过 4.5 需要字色相对亮度 ≤ 0.038；#7a4a55 只有 0.097（比值 2.70），
+       压到 #4b2731 才到 4.85。--pink-deep 同理：#e4789f 压在浅底上比值 2.25，
+       不到大字 3.0 的线；压到 #d4557f 得 3.1。
+       **颜色不是审美调整，是算出来的** —— 换底就要重算，别凭眼睛。 */
+  --sky:       #e4ebf6;
+  --pink:      #f1a1bb;
+  --pink-deep: #d4557f;
+  --ink-cool:  #3b4a63;
+  --warm-deep: #4b2731;
+
+  /* ---------- 4. 字体角色 ----------
+     前四个由 css/fonts.css 内嵌；系统字体只作缺字回落，不参与「选字」。
+     品牌包 fonts 段可整套替换。 */
+  --font-serif:  "Mag Mincho JP","Mag Mincho SC",SimSun,"Times New Roman",serif;
+  --font-sans:   "Mag Gothic JP","Microsoft JhengHei","Yu Gothic","Microsoft YaHei",sans-serif;
+  --font-script:      "Mag Script Silk","Mag Script Ribbon",cursive;
+  --font-script-fat:  "Mag Script Ribbon","Mag Script Silk",cursive;
+  --font-latin:       "Mag Editorial",Didot,Georgia,serif;
+  --font-latin-ital:  "Mag Editorial Italic","Mag Editorial",Georgia,serif;
+
+  /* ---------- 5. 字号级距 ---------- */
+  --fs-mega:  104px;
+  --fs-xxl:    68px;
+  --fs-xl:     46px;
+  --fs-lg:     30px;
+  --fs-mdl:    24px;
+  --fs-md:     20px;
+  --fs-sm:     17px;
+  --fs-xs:     14px;
+  --fs-xxs:    12px;
+
+  /* ---------- 6. 行高与字距 ---------- */
+  --lh-tight:  1.25;
+  --lh-normal: 1.55;
+  --lh-loose:  1.95;
+  --ls-cn:     0.06em;
+  --ls-wide:   0.18em;
+  --ls-xwide:  0.34em;
+
+  /* ---------- 7. 版面基准 ---------- */
+  --pad-x:     62px;
+  --pad-y:     52px;
+  --foot-safe: 88px;
+  --gap:       18px;
+  --hairline:  1px;
+
+  /* ---------- 8. 阴影 / 圆角 ---------- */
+  --sh-photo: 0 18px 44px rgba(60,45,38,.16);
+  --sh-soft:  0 6px 18px rgba(60,45,38,.10);
+  --r-sm: 3px;  --r-md: 10px;  --r-pill: 999px;
+}

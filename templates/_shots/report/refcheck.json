@@ -1,0 +1,36 @@
+{
+ "_doc": "硬断言结果。exit 1 = 不要进下一步、不要出图。",
+ "pages": [
+  {
+   "pid": "page01",
+   "file": "01.json",
+   "ref": "p01.jpg",
+   "canvas": {
+    "w": 1366,
+    "h": 1748
+   },
+   "ok": true,
+   "real": [
+    1366,
+    1748
+   ]
+  },
+  {
+   "pid": "page05",
+   "file": "05.json",
+   "ref": "p05.jpg",
+   "canvas": {
+    "w": 1366,
+    "h": 1748
+   },
+   "ok": true,
+   "real": [
+    1366,
+    1748
+   ]
+  }
+ ],
+ "refCount": 2,
+ "fails": [],
+ "warns": []
+}

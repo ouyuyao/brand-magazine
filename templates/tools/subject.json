@@ -1,0 +1,25 @@
+{
+  "_doc": [
+    "subject.json —— 模特／产品「主体保护区」声明表（画布像素坐标，各页坐标基准 = 该页 layout JSON 的 canvas）",
+    "",
+    "什么时候需要它：",
+    "  subjectguard.py 优先用 rembg(u2net) 自动分离主体核心（厚实的躯干/头部，腐蚀掉薄纱/肩带/发丝）。",
+    "  白底产品图 rembg 会失手，此时自动走「四角底色连通域」通道（与 cutout_flat.py 同源）。",
+    "  两条通道都判「掩膜不可信」（核心占底图 < 12%）时，才降级读本文件。",
+    "",
+    "它管什么：",
+    "  实底小模块（badge / torn / bubble / panel / band，或带 style.bg 的文字）不许盖住主体。",
+    "  纯文字压照片不算遮挡 —— 那是杂志语汇，交给 contrastcheck.py 管可读性。",
+    "  描边类（mod 含 outline）不算，因为它是空的。",
+    "",
+    "标定方法（与 faces.json 完全一致）：",
+    "  python tools/grid.py pageNN                       # 叠 100px 坐标网，先看位置",
+    "  python tools/probe.py pageNN:x,y,w,h --zoom 6.5 --no-zones   # 带尺裁切，读出坐标",
+    "  把 [{name,x,y,w,h}, ...] 填进下面 pages 的对应页；读数记在 _calib 里备查。",
+    "",
+    "注意：本文件为空**不等于通过**。subjectguard.py 会报 SKIP，不会报 OK。",
+    "     自动通道能算出可信掩膜的页，本文件留空即可。"
+  ],
+  "pages": {},
+  "_calib": {}
+}

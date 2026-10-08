@@ -1,0 +1,64 @@
+{
+  "_": "版式骨架 —— 由模型看参考图 assets/ref/p01.jpg 后解析得到（骨架级复刻：分区比例・层级・留白节奏・元素相对位置）。box 用归一化坐标 [x, y, w, h]（0–1），换画布尺寸不用改。kind: text/image/cutout/mask/rule/band/panel/badge/torn/bubble/logo。style 里 font 只写角色（serif/sans/script/script-fat/latin/latin-ital），颜色可写令牌名（ink/ink-2/accent/paper…）或字面色值。tpl 里 ${1} ${2} 是文案槽位，元素子节点照写标签。",
+
+  "id": "page01",
+  "ref": "p01.jpg",
+  "canvas": { "w": 1366, "h": 1748 },
+  "paper": { "grain": true },
+  "meta": { "title": "4 步穿法", "page": "P51", "note": "出血人像 ＋ 竖排句 ＋ Step 四格" },
+
+  "zones": [
+    { "id": "hero", "kind": "image", "box": [0, 0, 1, 0.652], "src": "images/p01-hero.jpg", "alt": "",
+      "style": { "treat": "bleed", "z": 1 } },
+
+    { "id": "credits", "kind": "text", "box": [0.055, 0.040, 0.24, 0.042], "tpl": "${1}<br>${2}",
+      "style": { "font": "sans", "size": 12, "leading": 1.7, "tracking": 0.02, "color": "ink-3", "z": 10 } },
+
+    { "id": "note-v", "kind": "text", "box": [0.207, 0.088, 0.033, 0.43], "tpl": "${1}",
+      "style": { "writing": "v", "font": "serif", "size": 21, "tracking": 0.2, "leading": 1.35, "color": "ink-2", "z": 10 } },
+
+    { "id": "step-script", "kind": "text", "box": [0.845, 0.572, 0.120, 0.048], "tpl": "Step",
+      "style": { "font": "latin-ital", "size": 44, "color": "#ffffff", "align": "right", "shadow": "0 2px 12px rgba(40,30,20,.5)", "z": 10 } },
+
+    { "id": "s1-img", "kind": "image", "box": [0.012, 0.655, 0.226, 0.178], "src": "images/step-1.jpg", "alt": "步骤一 细节",
+      "style": { "treat": "frame", "z": 3 } },
+    { "id": "s1-no",  "kind": "text",  "box": [0.012, 0.552, 0.07, 0.092], "tpl": "1",
+      "style": { "font": "latin", "size": 96, "color": "#ffffff", "leading": 1, "shadow": "0 2px 12px rgba(40,30,20,.5), 0 0 3px rgba(255,255,255,.95)", "z": 6 } },
+    { "id": "s1-h",   "kind": "text",  "box": [0.012, 0.850, 0.226, 0.050], "tpl": "${1}<br>${2}",
+      "style": { "font": "sans", "size": 15, "weight": 700, "leading": 1.5, "tracking": 0.05, "color": "ink", "z": 10 } },
+    { "id": "s1-p",   "kind": "text",  "box": [0.012, 0.900, 0.226, 0.068], "tpl": "${1}",
+      "style": { "font": "sans", "size": 11.5, "leading": 1.85, "tracking": 0.02, "color": "ink-2", "z": 10 } },
+
+    { "id": "s2-img", "kind": "image", "box": [0.262, 0.655, 0.226, 0.178], "src": "images/step-2.jpg", "alt": "步骤二 细节",
+      "style": { "treat": "frame", "z": 3 } },
+    { "id": "s2-no",  "kind": "text",  "box": [0.262, 0.552, 0.07, 0.092], "tpl": "2",
+      "style": { "font": "latin", "size": 96, "color": "#ffffff", "leading": 1, "shadow": "0 2px 12px rgba(40,30,20,.5), 0 0 3px rgba(255,255,255,.95)", "z": 6 } },
+    { "id": "s2-h",   "kind": "text",  "box": [0.262, 0.850, 0.226, 0.050], "tpl": "${1}<br>${2}",
+      "style": { "font": "sans", "size": 15, "weight": 700, "leading": 1.5, "tracking": 0.05, "color": "ink", "z": 10 } },
+    { "id": "s2-p",   "kind": "text",  "box": [0.262, 0.900, 0.226, 0.068], "tpl": "${1}",
+      "style": { "font": "sans", "size": 11.5, "leading": 1.85, "tracking": 0.02, "color": "ink-2", "z": 10 } },
+
+    { "id": "s3-img", "kind": "image", "box": [0.512, 0.655, 0.226, 0.178], "src": "images/step-3.jpg", "alt": "步骤三 细节",
+      "style": { "treat": "frame", "z": 3 } },
+    { "id": "s3-no",  "kind": "text",  "box": [0.512, 0.552, 0.07, 0.092], "tpl": "3",
+      "style": { "font": "latin", "size": 96, "color": "#ffffff", "leading": 1, "shadow": "0 2px 12px rgba(40,30,20,.5), 0 0 3px rgba(255,255,255,.95)", "z": 6 } },
+    { "id": "s3-h",   "kind": "text",  "box": [0.512, 0.850, 0.226, 0.050], "tpl": "${1}<br>${2}",
+      "style": { "font": "sans", "size": 15, "weight": 700, "leading": 1.5, "tracking": 0.05, "color": "ink", "z": 10 } },
+    { "id": "s3-p",   "kind": "text",  "box": [0.512, 0.900, 0.226, 0.068], "tpl": "${1}",
+      "style": { "font": "sans", "size": 11.5, "leading": 1.85, "tracking": 0.02, "color": "ink-2", "z": 10 } },
+
+    { "id": "s4-img", "kind": "image", "box": [0.762, 0.655, 0.226, 0.178], "src": "images/step-4.jpg", "alt": "步骤四 细节",
+      "style": { "treat": "frame", "z": 3 } },
+    { "id": "s4-no",  "kind": "text",  "box": [0.762, 0.552, 0.060, 0.092], "tpl": "4",
+      "style": { "font": "latin", "size": 96, "color": "#ffffff", "leading": 1, "shadow": "0 2px 12px rgba(40,30,20,.5), 0 0 3px rgba(255,255,255,.95)", "z": 6 } },
+    { "id": "s4-h",   "kind": "text",  "box": [0.762, 0.850, 0.226, 0.050], "tpl": "${1}<br>${2}",
+      "style": { "font": "sans", "size": 15, "weight": 700, "leading": 1.5, "tracking": 0.05, "color": "ink", "z": 10 } },
+    { "id": "s4-p",   "kind": "text",  "box": [0.762, 0.900, 0.226, 0.068], "tpl": "${1}",
+      "style": { "font": "sans", "size": 11.5, "leading": 1.85, "tracking": 0.02, "color": "ink-2", "z": 10 } },
+
+    { "id": "pageno", "kind": "text", "box": [0.045, 0.972, 0.06, 0.026], "tpl": "${1}",
+      "style": { "font": "latin", "size": 22, "color": "ink-2", "z": 30 } },
+    { "id": "wm", "kind": "text", "box": [0.79, 0.972, 0.16, 0.026], "tpl": "${1}",
+      "style": { "font": "sans", "size": 11, "tracking": 0.16, "color": "ink-4", "align": "right", "z": 30 } }
+  ]
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ink probe —— 字重墨迹测量页</title>
+<!-- 复用引擎自己的 @font-face（12 个内嵌 woff2），不再手抄一份，避免与 css/fonts.css 走样 -->
+<link rel="stylesheet" href="../css/fonts.css">
+<style>body{margin:0;font-size:13px;font-family:monospace;color:#333}</style>
+</head>
+<body>
+<script>
+/* 供 tools/inkprobe.js 通过 CDP 调用：
+     window.__load(spec)                → 加载某个字体规格，返回 Promise
+     window.__ink(family, weight, text, style) → 用 canvas 量这段字的墨迹像素占比
+   墨迹占比 = 非白像素 / 画布面积。数值越大 = 笔画越粗，是判断「font-weight 到底有没有生效」
+   唯一可靠的判据（CSS.getPlatformFontsForNode 只能报「用了哪个字体文件」）。 */
+window.__inkReady = (function () {
+  var cv = document.createElement('canvas');
+  cv.width = 1000; cv.height = 170;
+  var cx = cv.getContext('2d', { willReadFrequently: true });
+
+  window.__load = function (spec) {
+    try { return document.fonts.load(spec).catch(function () { return null; }); }
+    catch (e) { return Promise.resolve(null); }
+  };
+
+  window.__ink = function (family, weight, text, style) {
+    cx.fillStyle = '#fff'; cx.fillRect(0, 0, cv.width, cv.height);
+    cx.fillStyle = '#000';
+    cx.font = (style ? style + ' ' : '') + weight + ' 100px ' + family;
+    cx.textBaseline = 'top';
+    cx.fillText(String(text), 20, 24);
+    var d = cx.getImageData(0, 0, cv.width, cv.height).data;
+    var ink = 0, minx = 1e9, maxx = -1;
+    for (var y = 0; y < cv.height; y++) {
+      for (var x = 0; x < cv.width; x++) {
+        if (d[(y * cv.width + x) * 4] < 128) { ink++; if (x < minx) minx = x; if (x > maxx) maxx = x; }
+      }
+    }
+    return { ink: ink, ratio: +(ink / (cv.width * cv.height) * 100).toFixed(2), span: maxx - minx + 1 };
+  };
+  return true;
+})();
+</script>
+</body>
+</html>

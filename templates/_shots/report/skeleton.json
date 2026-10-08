@@ -1,0 +1,141 @@
+{
+ "_doc": "骨架吻合分（告警级）。score = 0.35·计划吻合 + 0.35·渲染吻合 + 0.15·照片框 + 0.15·结构相似度；≥ 0.80 = OK，0.60–0.80 = 尚可，< 0.60 = 版式可能没按参考图解析。score 为 null = 判据不适用（参考图照片主导，投影取不到结构线）。",
+ "tolFrac": 0.015,
+ "weights": {
+  "plan": 0.35,
+  "render": 0.35,
+  "photo": 0.15,
+  "sim": 0.15
+ },
+ "minRefLines": 1,
+ "pages": {
+  "page01": {
+   "ref": "p01.jpg",
+   "canvas": [
+    1366,
+    1748
+   ],
+   "score": 0.2161,
+   "weak": true,
+   "refLineCount": 3,
+   "plan": 0.0,
+   "planY": 0.0,
+   "planX": 0.0,
+   "render": 0.0,
+   "renderY": 0.0,
+   "renderX": 0.0,
+   "photo": 0.667,
+   "sim": 0.7735,
+   "refLinesY": [
+    0.9756
+   ],
+   "refLinesX": [
+    0.0313,
+    0.9473
+   ],
+   "planLinesY": [
+    0.0006,
+    0.8383,
+    0.9994
+   ],
+   "planLinesX": [
+    0.0007,
+    0.1159,
+    0.5
+   ],
+   "outLinesY": [
+    0.8378,
+    0.8878,
+    0.9556
+   ],
+   "outLinesX": [],
+   "missedPlanY": [
+    0.9756
+   ],
+   "missedPlanX": [
+    0.0313,
+    0.9473
+   ],
+   "missedRenderY": [
+    0.9756
+   ],
+   "missedRenderX": [
+    0.0313,
+    0.9473
+   ],
+   "photoZones": [
+    "s1-img",
+    "s2-img",
+    "s3-img",
+    "s4-img"
+   ]
+  },
+  "page05": {
+   "ref": "p05.jpg",
+   "canvas": [
+    1366,
+    1748
+   ],
+   "score": 0.4871,
+   "weak": false,
+   "refLineCount": 5,
+   "plan": 0.4167,
+   "planY": 0.3333,
+   "planX": 0.5,
+   "render": 0.4167,
+   "renderY": 0.3333,
+   "renderX": 0.5,
+   "photo": 0.4023,
+   "sim": 0.9002,
+   "refLinesY": [
+    0.2256,
+    0.62,
+    0.9578
+   ],
+   "refLinesX": [
+    0.0313,
+    0.9687
+   ],
+   "planLinesY": [
+    0.0006,
+    0.2128,
+    0.5983,
+    0.6383,
+    0.9161,
+    0.9939
+   ],
+   "planLinesX": [
+    0.0007,
+    0.4687,
+    0.9765
+   ],
+   "outLinesY": [
+    0.5978,
+    0.9022,
+    0.9467
+   ],
+   "outLinesX": [
+    0.0142,
+    0.9786
+   ],
+   "missedPlanY": [
+    0.62,
+    0.9578
+   ],
+   "missedPlanX": [
+    0.0313
+   ],
+   "missedRenderY": [
+    0.2256,
+    0.62
+   ],
+   "missedRenderX": [
+    0.0313
+   ],
+   "photoZones": [
+    "plate-a",
+    "plate-b"
+   ]
+  }
+ }
+}

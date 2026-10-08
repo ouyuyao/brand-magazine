@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/* =========================================================================
+   typography.css —— 字体角色（.fr-*）与字形切换
+   -------------------------------------------------------------------------
+   版式骨架里每个文字区块只声明「角色」（serif / sans / script / latin …），
+   不写具体字体名。角色→字体族的映射在 tokens.css 的 --font-* 变量里，
+   由品牌包覆盖。这就是「保留原刊文字样式」可落地的方式：
+   原刊是明朝标题 → 区块标 role:"serif"；原刊是黑体内文 → role:"sans"。
+   ========================================================================= */
+
+/* ---------------- 角色类 ---------------- */
+.fr-serif      { font-family: var(--font-serif); }
+.fr-sans       { font-family: var(--font-sans); }
+.fr-script     { font-family: var(--font-script); font-weight: 400; }
+.fr-script-fat { font-family: var(--font-script-fat); font-weight: 400; }
+.fr-latin      { font-family: var(--font-latin); }
+.fr-latin-ital { font-family: var(--font-latin-ital); font-style: italic; }
+
+/* ---------------- 字形切换：中文稿走简体明朝 ----------------
+   同一个「直」「骨」「今」在 JP / SC 里起笔与重心都不同，
+   日文稿用 SC 字形会被日本读者一眼看出是「中文排版」。
+   靠 <html lang> 切（js/copy.js 必定会设），两侧都保留 JP 回落，不会出豆腐块。 */
+html[lang="zh-Hant"], html[lang^="zh"] {
+  --font-serif: "Mag Mincho SC","Mag Mincho JP",SimSun,"Times New Roman",serif;
+}
+
+/* ---------------- 排版默认 ----------------
+   所有文字区块共享的基线行为。单个区块可在 layout JSON 的 style 里覆写。 */
+.z--text {
+  white-space: pre-wrap;          /* 尊重 layout JSON 里的换行 */
+  overflow-wrap: break-word;
+  font-kerning: normal;
+  font-feature-settings: "palt" 0; /* 中文/日文不做比例字距（杂志正文要等宽感） */
+}
+.z--text.is-center { text-align: center; }
+.z--text.is-right  { text-align: right; }
+.z--text.is-just   { text-align: justify; }
+
+/* 直排（原刊的竖排句、巨型直排署名） */
+.v { writing-mode: vertical-rl; text-orientation: mixed; }
+.v--upright { text-orientation: upright; }
+
+/* 行内强调（layout JSON 的 text 里可用 <b> / <em> / <span class="em">） */
+.z--text b, .z--text strong { font-weight: 700; }
+.z--text em { font-style: normal; color: var(--accent-deep); font-weight: 700; }
+.z--text .uline { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+.z--text .box { box-shadow: inset 0 -0.34em 0 var(--accent-soft); }

@@ -1,0 +1,186 @@
+@charset "UTF-8";
+/* =========================================================================
+   layout.css —— 画布外壳 + 分区（zone）原语
+   -------------------------------------------------------------------------
+   版式由 build.js 从 layout/NNN.json 生成：每个 zone 变成一个绝对定位的
+   <div class="z z--<kind>" id="<id>">，几何（left/top/width/height）与
+   排版（font-size/weight/tracking/leading/color）逐条写成 inline style。
+   这个文件只提供「几何表达不了的东西」：纸底、罫线、撕纸、气泡、圆形遮罩…
+
+   于是：改版式 = 改 layout JSON，不改 CSS；换品牌 = 改 brand pack，不改版式。
+   ========================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #e7e4df;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------- 缩放外壳（浏览器预览用；出图时被 shoot.js 归零） ---------------- */
+.stage-wrap { position: relative; margin: 0 auto; transform-origin: top center; transition: transform .18s ease-out; }
+.stage {
+  position: relative;
+  width: var(--page-w); height: var(--page-h);
+  background: var(--paper);
+  box-shadow: 0 10px 40px rgba(40,32,26,.18);
+  overflow: hidden;
+}
+
+/* ---------------- 叠图比对层（「叠图」按钮三态：关 → 参考图 → 差异图） ----------------
+   两层都常驻 DOM（由 build.js 按 layout 里的 ref 生成），靠 body 上的类切换。
+   · .ref-img  参考图，multiply 压在产品上 → 看「版面有没有对上骨架」；
+   · .ref-diff 差异热图（tools/refgrid.py 产），screen 让高热区发光 → 看「哪里漏排了」。 */
+.ref-overlay {
+  position: absolute; inset: 0; z-index: 900; pointer-events: none;
+  opacity: 0; transition: opacity .2s;
+  background-size: 100% 100%; background-repeat: no-repeat;
+}
+.ref-overlay.ref-img  { mix-blend-mode: multiply; }
+.ref-overlay.ref-diff { mix-blend-mode: screen; }
+body.show-ref  .ref-overlay.ref-img  { opacity: .5; }
+body.show-diff .ref-overlay.ref-diff { opacity: .8; }
+
+/* ---------------- 页面本体 ---------------- */
+.page {
+  position: relative;
+  width: 100%; height: 100%;
+  background: var(--paper);
+  overflow: hidden;
+  font-family: var(--font-sans);
+  color: var(--ink);
+}
+.page.is-paper-warm { background: var(--paper-warm); }
+.page.is-paper-cream { background: var(--paper-cream); }
+/* 参考刊底色的承接位：出血照重铺成「背景基色」后，纸底也跟着换，
+   这样照片边缘之外（例如以后改成内缩排版）不会露出白色。 */
+.page.is-paper-sky { background: var(--sky); }
+.page.is-paper-pink { background: var(--pink); }
+
+/* 纸纹（可选：layout JSON 的 paper.grain = true）—— 用极淡噪点保住「印刷物」手感 */
+.paper-grain::after {
+  content: ''; position: absolute; inset: 0; z-index: 800; pointer-events: none;
+  opacity: .5; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.16'/></svg>");
+}
+
+/* =========================================================================
+   分区原语
+   ========================================================================= */
+.z { position: absolute; }
+
+/* ---- 文字 ---- */
+/* .t 撑满外层框的高度：这样 scrollHeight 才等于「内容实际高度」，
+   copycheck 的纵向溢出判定（sh > ch）才成立。若用了 valign（flex 垂直居中），
+   则 .t 必须回到 auto，否则 flex 居中失效。 */
+.z--text > .t { height: 100%; }
+.z--text.has-valign > .t { height: auto; }
+/* 竖排区块：.t 必须显式撑满框宽。
+   父级带 writing-mode: vertical-rl 时，子块 width:auto 会退化成「块轴 = line-height」
+   的收缩宽度（例：38px × 1.16 = 44px），于是 scrollWidth 会虚报超框、
+   copycheck 报「横向溢出」——那是收缩宽度的伪影，不是真的排不下。
+   撑满后块轴起点仍在右缘（vertical-rl 的块起始边），文字位置不变。 */
+.z--text.v > .t { width: 100%; }
+
+/* ---- 图片 ---- */
+.z--image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.z--image.is-contain img { object-fit: contain; }
+.z--image.is-frame { background: #fff; padding: 12px 12px 16px; box-shadow: var(--sh-photo); }
+.z--cutout img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* 圆形 / 圆角遮罩（原刊的「细节特写圆」、头像位） */
+.z--mask { overflow: hidden; background: #fff; }
+.z--mask img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.z--mask.is-circle { border-radius: 50%; box-shadow: 0 0 0 3px #fff, var(--sh-soft); }
+
+/* ---- 罫线 ---- */
+.z--rule { background: var(--rule); height: var(--hairline); }
+.z--rule.is-v { width: var(--hairline); height: auto; }
+.z--rule.is-soft { background: var(--rule-soft); }
+
+/* ---- 色块 / 面板 ---- */
+.z--band  { background: var(--ink); color: #fff; }
+.z--panel { background: var(--paper-cream); border-radius: var(--r-sm); }
+.z--panel.is-wash  { background: var(--accent-wash); }
+.z--panel.is-white { background: #fff; box-shadow: var(--sh-soft); }
+
+/* ---- 徽章（促销/属性一律图标化，不做成长句） ---- */
+.z--badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--accent); color: #fff;
+  border-radius: var(--r-pill);
+  padding: 0 14px;
+  font-weight: 700; letter-spacing: var(--ls-cn);
+}
+.z--badge.is-outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }
+
+/* ---- 撕纸标签 ---- */
+.z--torn {
+  background: var(--paper-warm); color: var(--ink-2);
+  filter: drop-shadow(0 4px 10px rgba(60,45,38,.12));
+  clip-path: polygon(0% 6%, 3% 0%, 14% 5%, 27% 1%, 41% 6%, 56% 0%, 70% 5%, 84% 1%, 96% 6%, 100% 2%,
+                     99% 94%, 88% 100%, 72% 95%, 57% 100%, 43% 95%, 28% 100%, 13% 95%, 2% 100%);
+}
+
+/* ---- 对话气泡（附小尾巴） ---- */
+.z--bubble {
+  background: #fff; border: 2px solid var(--ink); border-radius: var(--r-pill);
+  padding: 12px 22px; box-shadow: var(--sh-soft);
+}
+.z--bubble::after {
+  content: ''; position: absolute; width: 14px; height: 14px; background: #fff;
+  border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+}
+.z--bubble.is-tail-b::after { left: 38px;  bottom: -9px; transform: rotate(45deg); }
+.z--bubble.is-tail-l::after { left: -9px;  bottom: 26px; transform: rotate(135deg); }
+.z--bubble.is-tail-r::after { right: -9px; bottom: 26px; transform: rotate(-45deg); }
+
+/* ---- 品牌 logo（图或文字） ---- */
+.z--logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* ---- 弧排文字（arc） ----
+   build 只输出 <div class="z z--text is-arc" data-arc='{…}'><div class="t">文本</div></div>；
+   js/arc.js 在运行时把 .t 里那个**原直接文本节点**搬进 <textPath> 并算出弧线
+   （搬运而非复制 —— copy.js 缓存的同一个节点，切语言时改 nodeValue 仍生效）。
+   几何：圆心 (cx,cy) 相对本框；半径 r 相对框宽；mid = 弧中点角度（0=右 90=下 -90=上）。
+   span 省略 → 按文字实测长度自动撑弧（<textPath> 超出路径的部分会被静默截断，必须自动撑）。*/
+.z--text.is-arc > .t { height: 100%; }
+.z--text.is-arc .arc-svg {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+  overflow: visible; pointer-events: none;
+}
+.z--text.is-arc .arc-svg text { fill: currentColor; }
+
+/* =========================================================================
+   浮动的工具列与提示（预览用，按 H 隐藏；出图时 ?shot=1 会自动隐藏）
+   ========================================================================= */
+.toolbar {
+  position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+  z-index: 9999; display: flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,.94); border: 1px solid var(--rule);
+  border-radius: var(--r-pill); padding: 7px 10px;
+  box-shadow: 0 8px 26px rgba(50,40,32,.16); font-size: 13px;
+  backdrop-filter: blur(8px); transition: opacity .2s, transform .2s;
+}
+body.hide-ui .toolbar { opacity: 0; transform: translateX(-50%) translateY(24px); pointer-events: none; }
+.toolbar a, .toolbar button {
+  font-family: inherit; font-size: 13px; color: var(--ink-2);
+  background: transparent; border: 0; cursor: pointer;
+  padding: 6px 11px; border-radius: var(--r-pill);
+  text-decoration: none; letter-spacing: .02em; transition: background .15s;
+  flex: 0 0 auto; white-space: nowrap;   /* 锁住不折行，否则按钮被压窄后整条变两排 */
+}
+.toolbar a:hover, .toolbar button:hover { background: var(--accent-wash); color: var(--accent-deep); }
+.toolbar button.is-on { background: var(--ink); color: #fff; }
+.toolbar .sep { width: 1px; height: 18px; background: var(--rule); margin: 0 5px; }
+.toolbar .pill-idx { font-family: var(--font-latin); font-size: 14px; color: var(--ink-2); padding: 0 8px; min-width: 54px; text-align: center; }
+.toolbar .zoomval { font-family: var(--font-latin); font-size: 13px; min-width: 48px; text-align: center; color: var(--ink-3); }
+.hint { position: fixed; left: 20px; bottom: 22px; z-index: 9998; font-size: 12px; color: #8d857c; letter-spacing: .06em; }
+body.hide-ui .hint { opacity: 0; }
+
+/* 改字模式 */
+body.edit-text [contenteditable="true"]:focus { outline: 2px dashed var(--accent); outline-offset: 3px; background: rgba(255,255,255,.6); }
+body.edit-text .page { cursor: text; }

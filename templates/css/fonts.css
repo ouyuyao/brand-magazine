@@ -1,0 +1,70 @@
+@charset "UTF-8";
+/* ==========================================================================
+   fonts.css —— 内嵌字体（杂志感的地基）
+   --------------------------------------------------------------------------
+   为什么必须内嵌，不能用系统字体栈：
+
+   本机实测 —— 明朝体只有「Noto Serif SC」，没有 TC 版，也没有 Yu Mincho /
+   MS Mincho；系统栈会一路落到 **SimSun**，标题的字重、字面宽度、顿挫全不对。
+   手写体只有 Segoe Script（童趣圆体），没有参考刊那种 copperplate 系统。
+   所以把 Noto Serif JP/SC（真明朝 400/700/900）、Noto Sans JP、两款 script、
+   两款拉丁衬线随包带走：出图稳定、换机可用。均为 OFL 授权，可随项目分发。
+
+   ★ 字体族名是「引擎中立名」（Mag *），不绑定任何品牌。
+     某个品牌想换字体 → 改 brand/brand-pack.json 的 fonts 段；
+     字段契约与 fontMap 台账口径见 ../contracts/brand-pack.md §3.7，
+     识别原刊字体的流程见 ../references/05-font-identification.md。
+     改完用 `node tools/fontcheck.js` 验「真的用了内嵌字体」，
+     再用 `node tools/inkprobe.js` 验「字重真的生效」——两者缺一不可。
+
+   字形切换：日文稿用 JP、中文稿用 SC。靠 <html lang> 选（js/copy.js 一定会设）。
+   两套都保留 JP 作为回落，避免缺字变豆腐。
+   ========================================================================== */
+
+/* ---------- 明朝体 · 日文（主稿字体） ---------- */
+@font-face { font-family: "Mag Mincho JP";
+  src: url("../fonts/noto-serif-jp-japanese-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Mincho JP";
+  src: url("../fonts/noto-serif-jp-japanese-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Mincho JP";
+  src: url("../fonts/noto-serif-jp-japanese-900-normal.woff2") format("woff2");
+  font-weight: 900; font-style: normal; font-display: block; }
+
+/* ---------- 明朝体 · 中文（中文稿字形） ---------- */
+@font-face { font-family: "Mag Mincho SC";
+  src: url("../fonts/noto-serif-sc-chinese-simplified-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Mincho SC";
+  src: url("../fonts/noto-serif-sc-chinese-simplified-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Mincho SC";
+  src: url("../fonts/noto-serif-sc-chinese-simplified-900-normal.woff2") format("woff2");
+  font-weight: 900; font-style: normal; font-display: block; }
+
+/* ---------- 黑体 · 日文（内文 / 说明） ---------- */
+@font-face { font-family: "Mag Gothic JP";
+  src: url("../fonts/noto-sans-jp-japanese-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Gothic JP";
+  src: url("../fonts/noto-sans-jp-japanese-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: block; }
+
+/* ---------- 手写体 · 两种笔性 ----------
+   Silk   —— 极细 copperplate，笔画如丝线（签名式大字）
+   Ribbon —— 笔画丰满、转折圆润（压在浅底上的装饰大字用，细线会看不清） */
+@font-face { font-family: "Mag Script Silk";
+  src: url("../fonts/pinyon-script-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Script Ribbon";
+  src: url("../fonts/great-vibes-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: block; }
+
+/* ---------- 英文衬线（大写字标 / 数字 / 装饰） ---------- */
+@font-face { font-family: "Mag Editorial";
+  src: url("../fonts/playfair-display-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Mag Editorial Italic";
+  src: url("../fonts/cormorant-garamond-latin-400-italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: block; }
